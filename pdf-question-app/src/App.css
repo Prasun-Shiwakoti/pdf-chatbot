@@ -1,0 +1,189 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 0 4%;
+  box-shadow: 0px -8px 22px rgba(0, 0, 0, .22);
+  height: 9vh;
+}
+nav .fileContainer{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: right;
+  align-items: center;
+  gap: 2rem;
+}
+nav .fileContainer .filename{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  gap: .75rem;
+}
+.filename .name{
+  color: #0FA958;
+}
+nav .fileContainer .file-icon{
+  width: 30px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("./file-icon.svg") no-repeat center;
+}
+
+nav button{
+  width: 15%;
+  height: 60%;
+  background-color: white;
+  border: 1.5px solid black;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+}
+
+nav .add-icon{
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("./add-icon.svg") no-repeat center;
+}
+
+nav .logo{
+  width: 10%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("./aiplanet-logo.svg") no-repeat center;
+}
+
+
+.chatScreen{
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  height: 90vh;
+  width: 100%;
+  padding: 0 8%;
+}
+
+.chatScreen .inputContainer{
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #E4E8EE;
+  border-radius: 8px;
+  height: 9%;
+  padding-right: 1rem;
+}
+
+.chatScreen .inputContainer input{
+  width: 100%;
+  padding: 0 1rem;
+  border: none;
+  font-size: 16px;
+}
+
+.inputContainer .send-icon{
+  width: 25px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('./send-icon.svg') no-repeat center;
+  border: none;
+  cursor: pointer;
+}
+
+
+.messageContainer{
+  width: 100%;
+  height: 80%;
+  overflow-y: auto;
+  padding: 1rem 0;
+  padding-top: 3rem;
+}
+
+.messageContainer .messageBox{
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+.messageBox .message{
+  display: flex;
+  align-items: center;
+}
+
+.messageBox .profilePic{
+  width: 52px;
+  min-width: 52px;
+  height: 52px;
+  border-radius: 50%;
+}
+.messageBox .ai-profile{
+  background: url('./ai-logo.svg') no-repeat center;
+}
+.messageBox .user-profile{
+  background: url('./user-logo.svg') no-repeat center;
+}
