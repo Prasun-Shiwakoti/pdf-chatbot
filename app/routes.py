@@ -48,10 +48,7 @@ def getChat(question, document_id):
                 "role": 'assistant',
                 "content": response,
             }
-        )
-        # Print token usage statistics for monitoring purposes
-        print(completion.usage.completion_tokens, completion.usage.prompt_tokens, completion.usage.total_tokens)
-        
+        )        
         # Ensure that total tokens do not exceed a certain limit (4000)
         while completion.usage.total_tokens > 4000:
             messages[document_id].pop()  # Remove the oldest message to stay within list
@@ -78,12 +75,29 @@ async def read_documents(db: Session = Depends(get_db)):
     documents = db.query(Document).all() 
     return documents 
 
+@router.get("/chats/{document_id}")
+async def read_chats(document_id: str):
+    global messages
+    # Return the message history for the specified document
+    return {'messages': messages[document_id][1:]}
 
 @router.post("/upload/") 
 async def create_document(doc: UploadFile = File(...), db: Session = Depends(get_db)):
     try:
         file_path = f"./uploads/{doc.filename}"
 
+        # Check if the file already exists in the databse
+        db_doc = db.query(Document).filter(Document.filename == doc.filename).first()
+        if db_doc:
+            if not messages[str(db_doc.id)]:
+                messages[str(db_doc.id)].append(
+                    {
+                        "role": 'system',
+                        "content": f"You are a helpful AI assistant. Always reply based on the context provided.\nContext: {db_doc.extracted_text}",
+                    }
+                )
+            return {"message": "File already exists", "document_id": db_doc.id, "filename": db_doc.filename}
+        
         with open(file_path, "wb") as buffer:
             buffer.write(doc.file.read())
 
@@ -95,6 +109,8 @@ async def create_document(doc: UploadFile = File(...), db: Session = Depends(get
         for page in pdf_document:
             extracted_text += page.get_text()
 
+        
+        # Initialize the messages list with the context for the model
         db_document = Document(filename=doc.filename, file_path=file_path, extracted_text=extracted_text)
 
         # Add the new document to the database session and commit the changes
@@ -103,6 +119,14 @@ async def create_document(doc: UploadFile = File(...), db: Session = Depends(get
         
         # Refresh the instance to get the updated state (e.g., ID)
         db.refresh(db_document)
+
+        if not messages[str(db_document.id)]:
+            messages[str(db_document.id)].append(
+                {
+                    "role": 'system',
+                    "content": f"You are a helpful AI assistant. Always reply based on the context provided.\nContext: {extracted_text}",
+                }
+            )
 
     except Exception as e:
         return {"message": "There was an error uploading the file", 'error': f'{e}'}
@@ -128,14 +152,7 @@ async def answer_question(document_id: str = Form(...), question: str = Form(...
     # Extract the context text from the retrieved document
     context = db_document.extracted_text
     
-    # Initialize the messages list with the context for the model
-    if not messages[document_id]:
-        messages[document_id].append(
-            {
-                "role": 'system',
-                "content": f"You are a helpful AI assistant. Always reply based on the context provided.\nContext: {context}",
-            }
-        )
+
 
     
     # Call the getChat function to get a response based on the user's question and context

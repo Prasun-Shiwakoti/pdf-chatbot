@@ -181,7 +181,7 @@ nav .logo{
   height: 52px;
   border-radius: 50%;
 }
-.messageBox .ai-profile{
+.messageBox .assistant-profile{
   background: url('./ai-logo.svg') no-repeat center;
 }
 .messageBox .user-profile{

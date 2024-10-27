@@ -1,16 +1,9 @@
 
-import React, { useState } from 'react';
 import axios from 'axios';
 
 
 
-const ChatScreen = ({ documentId }) => {
-    const [messages, setMessages] = useState([]); // State to hold chat messages
-
-    const updateMessages = (profile, message) => {
-        // Update the messages state with a new message from either user or AI
-        setMessages(prevMessages => [...prevMessages, { 'profile': profile, 'message': message, 'key': Math.random() }]);
-    }
+const ChatScreen = ({ documentId, messages, updateMessages }) => {
 
     const askQuestion = async () => {
         let question = document.getElementById('user-prompt').value; 
@@ -27,7 +20,7 @@ const ChatScreen = ({ documentId }) => {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             
-            updateMessages('ai', response.data.answer); // Update messages with AI's response
+            updateMessages('assistant', response.data.answer); // Update messages with AI's response
 
         } catch (error) {
             console.error("Error asking question", error); // Log any errors that occur during the request
@@ -38,9 +31,9 @@ const ChatScreen = ({ documentId }) => {
         <div className="chatScreen">
             <div className="messageContainer">
                 {messages.map((message) => (
-                    <div className="messageBox" key={message.key}>
-                        <div className={`profilePic ${message.profile}-profile`} />
-                        <div className="message">{message.message}</div>
+                    <div className="messageBox" key={Math.random()}>
+                        <div className={`profilePic ${message.role}-profile`} />
+                        <div className="message">{message.content}</div>
                     </div>
                 ))}
             </div>
