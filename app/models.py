@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, LargeBinary, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -17,7 +17,6 @@ class Document(Base):
     upload_date = Column(DateTime, default=datetime.utcnow)
     file_path = Column(String, index=True)
     extracted_text = Column(String) 
-
 
 Base.metadata.create_all(bind=engine)
 
